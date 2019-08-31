@@ -1,0 +1,65 @@
+rule VoterSeeUpdateThemselvesOnly {
+  description: "Voter can see and update their own record only"
+  participant(t): "org.example.votebook.Voter"
+  operation: READ, UPDATE
+  resource(v): "org.example.votebook.Voter"
+  condition: (v.getIdentifier() == t.getIdentifier())
+  action: ALLOW
+}
+
+rule VoterSeeTheirTokenOnly {
+  description: "Voter can see all the tokens and update"
+  participant: "ANY"
+  operation: READ, UPDATE
+  resource: "org.example.votebook.Token"
+  action: ALLOW
+}
+
+rule AnyCanReadCandidate {
+  description: "Anyone can read candidate information"
+  participant: "ANY"
+  operation: ALL
+  resource: "org.example.votebook.Candidate"
+  action: ALLOW
+}
+
+rule EnableRequestTokenValidTxn {
+    description: "Enable Voters to submit RequestTokenValid transactions"
+    participant: "org.example.votebook.Voter"
+    operation: ALL
+    resource: "org.example.votebook.RequestTokenValid"
+    action: ALLOW
+}
+
+rule EnableVoteTxn {
+    description: "Enable Voters to submit Vote transactions"
+    participant: "org.example.votebook.Voter"
+    operation: ALL
+    resource: "org.example.votebook.Vote"
+    action: ALLOW
+}
+
+rule VoterSeeOwnHistoryOnly {
+  description: "Voters should be able to see the history of their own transactions only"
+  participant(t): "org.example.votebook.Voter"
+  operation: READ
+  resource(v): "org.hyperledger.composer.system.HistorianRecord"
+  condition: (v.participantInvoking.getIdentifier() != t.getIdentifier())
+  action: DENY
+}
+
+rule NetworkAdminUser {
+    description: "Grant business network administrators full access to user resources"
+    participant: "org.hyperledger.composer.system.NetworkAdmin"
+    operation: ALL
+    resource: "**"
+    action: ALLOW
+}
+
+rule NetworkAdminSystem {
+    description: "Grant business network administrators full access to system resources"
+    participant: "ANY"
+    operation: ALL
+    resource: "org.hyperledger.composer.system.**"
+    action: ALLOW
+}

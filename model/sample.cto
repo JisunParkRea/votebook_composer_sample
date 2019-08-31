@@ -1,0 +1,43 @@
+namespace org.example.votebook
+
+asset Token identified by tokenId {
+  o String tokenId
+  o Boolean isValid default = false
+  o Boolean isExpired default = false
+}
+
+asset Candidate identified by candidateId {
+  o String candidateId
+  --> Voter voter
+  o Integer voteNum default = 0
+}
+  
+participant Voter identified by voterId {
+  o String voterId
+  o String studentId
+  o String name
+  o String department
+  --> Token token
+}
+  
+transaction CreateVoterToken {
+  o Voter voterInfo
+  --> Token tokenInfo
+}
+  
+transaction RequestTokenValid {
+  --> Voter voter
+}
+  
+transaction EnrollCandidate {
+  o Candidate candidate
+}
+  
+transaction Vote {
+  --> Token token
+  --> Candidate candidateSelect
+}
+  
+event ErrorReport {
+  o String errorType
+}

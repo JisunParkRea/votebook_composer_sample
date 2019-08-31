@@ -1,0 +1,18 @@
+query selectAllCandidates {
+  description: "Select all candidates"
+  statement:
+      SELECT org.example.votebook.Candidate
+}
+
+query selectAllTokens {
+  description: "Select all tokens"
+  statement:
+      SELECT org.example.votebook.Token
+}
+
+query selectTokenByTokenId {
+  description: "Select token by tokenId"
+  statement:
+      SELECT org.example.votebook.Token
+          WHERE (tokenId == _$tokenId)
+}
